@@ -19,6 +19,7 @@ public:
 	IOEngine();
 	~IOEngine();
 
+	void connect(std::string IP, uint16_t PORT);
 	void listenForMessages(uint16_t listenPort);
 
 	void sendMessage(std::string& message, std::string& targetIp, uint16_t targetPort);

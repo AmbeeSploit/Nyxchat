@@ -3,11 +3,11 @@
 #include <iostream>
 
 #include "engine/IOEngine.hpp"
+#define PORT 4444
+#define IP "127.0.0.1"
 
 int main()
 {
-	std::string targetIP = "127.0.0.1";
-	uint16_t targetPort = 4444;
 
 	IOEngine ioEngine;;
 
@@ -23,9 +23,10 @@ int main()
 	switch (userInputChoice) {
 	case 1:
 		while (true) {
+			ioEngine.connect(IP, PORT);
 			std::cout << "\nType message: ";
 			std::cin >> userInputMessage;
-			ioEngine.sendMessage(userInputMessage, targetIP, targetPort);
+			ioEngine.sendMessage(userInputMessage);
 		}
 	case 2:
 		while (true) {
@@ -33,6 +34,8 @@ int main()
 			ioEngine.listenForMessages(targetPort);
 		}
 	}
+
+	return 0;
 }
 
 

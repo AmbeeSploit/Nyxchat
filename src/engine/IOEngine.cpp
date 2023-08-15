@@ -2,14 +2,22 @@
 
 #include "IOEngine.hpp"
 
-IOEngine::IOEngine() {
+IOEngine::IOEngine() 
+{
 	this->p_socket = new tcp::socket(this->ioContext);
-
 }
 
 IOEngine::~IOEngine() {
 
 }
+
+void IOEngine::connect(std::string IP, uint16_t PORT)
+{
+	tcp::resolver resolver(this->ioContext);
+	tcp::resolver::results_type endpoints = resolver.resolve(IP, std::to_string(PORT));
+	boost::asio::connect(*this->p_socket, endpoints);
+}
+
 
 void IOEngine::listenForMessages(uint16_t listenPort)
 {
@@ -35,9 +43,15 @@ void IOEngine::listenForMessages(uint16_t listenPort)
 	}
 }
 
-void IOEngine::sendMessage(std::string& message, std::string& targetIp, uint16_t targetPort) {
-	tcp::resolver resolver(this->ioContext);
-	tcp::resolver::results_type endpoints = resolver.resolve(targetIp, std::to_string(targetPort));
-	boost::asio::connect(*this->p_socket, endpoints);
+void IOEngine::sendMessage(std::string& message) 
+{
 	boost::asio::write(*this->p_socket, boost::asio::buffer(message));
 }
+
+void IOEngine::~IOEngine()
+{
+	delete this->p_socket
+}
+
+
+
